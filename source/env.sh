@@ -1,2 +1,2 @@
-PCP="$(cd .. && pwd)"
+PCP="$HOME/.commands"
 config="$PCP/.config"

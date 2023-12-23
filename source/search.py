@@ -22,12 +22,17 @@ def showLines(file):
                     line = line.replace(target, BOLD + CYAN + target + RESET)
                     print(f"{file}:{i+1}:{line}", end='')
 
+def hasExtension(file):
+    ext = ("java", "py")
+    return file.split(".")[-1] in ext
+
 def list(path):
      for i in listdir(path):
           f = f"{path}/{i}"
+          print(f)
           if isdir(f):
                list(f)
-          elif isfile(f):
+          elif isfile(f) and hasExtension(f):
                showLines(f)
 
 if len(argv) == 3:

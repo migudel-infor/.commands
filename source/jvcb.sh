@@ -6,7 +6,7 @@ source env.sh
 name="jvcb"
 configFile="$config/.compile" # Fichero de configuración
 
-bin='bin/'     # Carpet destino con los ejecutables
+bin='bin'     # Carpet destino con los ejecutables
 run=""         # Execution java file
 args=""        # Execution arguments
 compile=""     # Files to compile
@@ -85,10 +85,14 @@ parseArgs () {
           elif [[ "$1" == "-s" || "$1" == "--sinfo" ]]; then
                sinfo=0
                shift
-          elif [[ "$1" == "-r" || "$1" == "--run" ]]; then
+          elif [[ "$1" == "-R" || "$1" == "--runFile" ]]; then
                [ $argsMode -ne 0 ] && saveExit "Incorrect use\nFor more information use $name -h or $name --help"
                shift
                run="$1"
+          elif [[ "$1" == "-r" || "$1" == "--run" ]]; then
+               [ $argsMode -ne 0 ] && saveExit "Incorrect use\nFor more information use $name -h or $name --help"
+               run=Main
+               shift
           elif [[ "$1" == "-b" || "$1" == "--bin" ]]; then
                command="$1"
                shift
@@ -116,6 +120,14 @@ parseArgs () {
           echo "$i in $compile"
           compile=$(echo "$compile" | sed "s/ \b$i\b//g")
      done
+     if [[ "$run" == "Main" ]]; then
+          for i in $compile; do 
+               if [[ "$i" == *"$run"* ]]; then
+                    run="$i"
+                    break 
+               fi 
+          done 
+     fi
      [ $sinfo -eq 0 ] && 
           echo -e "${BOLD}INFO${RESET}" &&
           echo -e "\tbin='$bin'" &&
